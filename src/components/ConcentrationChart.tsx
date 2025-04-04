@@ -51,11 +51,11 @@
         },
         tooltip: {
           callbacks: {
-            label: function(context: {
-              dataset: {label: string};
-              raw: number;
-            }) {
-              return `${context.dataset.label}: ${context.raw.toFixed(2)}`;
+            label: function(tooltipItem: any) {
+              // Get the dataset label and raw value from the tooltipItem parameter
+              const label = tooltipItem.dataset.label || '';
+              const value = tooltipItem.raw;
+              return `${label}: ${value.toFixed(2)}`;
             },
           },
         },
