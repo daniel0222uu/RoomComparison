@@ -46,7 +46,7 @@
           color: "#1f2937",
           font: {
             size: 16,
-            weight: "bold"
+            weight: 700
           }
         },
         tooltip: {
