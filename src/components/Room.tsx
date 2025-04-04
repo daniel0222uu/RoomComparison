@@ -19,7 +19,7 @@ export default function Room({
   onChange,
   step = 0.1
 }: RoomProps) {
-  const [area, setArea] = useState(20);
+  const [area, setArea] = useState(100);
   const [height, setHeight] = useState(2.5);
   const [airChanges, setAirChanges] = useState(3);
   const [q, setQ] = useState(0);

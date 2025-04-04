@@ -1,6 +1,7 @@
 // src/components/ConcentrationChart.tsx
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import annotationPlugin from 'chartjs-plugin-annotation';
 
 ChartJS.register(
     CategoryScale,
@@ -8,7 +9,8 @@ ChartJS.register(
     BarElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    annotationPlugin
 );
 
 interface ChartData {
@@ -67,6 +69,27 @@ export default function ConcentrationChart({ c1, c2, c3 }: ChartData) {
           },
         },
       },
+      annotation: {
+        annotations: {
+          thresholdLine: {
+            type: 'line',
+            yMin: 50,
+            yMax: 50,
+            borderColor: 'rgb(255, 99, 132)',
+            borderWidth: 2,
+            borderDash: [6, 6],
+            label: {
+              display: true,
+              content: 'Tröskelvärde: 50 cfu/m³',
+              position: 'end',
+              backgroundColor: 'rgba(255, 99, 132, 0.7)',
+              font: {
+                size: 12
+              }
+            }
+          }
+        }
+      }
     },
     scales: {
       y: {
