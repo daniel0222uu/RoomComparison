@@ -1,103 +1,96 @@
-import Image from "next/image";
+// src/app/page.tsx
+  "use client";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  import { useState, useCallback } from "react";
+  import Room from "../components/Room";
+  import ConcentrationChart from "../components/ConcentrationChart";
+  import Summary from "../components/Summary";
+  import { calculateCValue } from "../utils/calculations";
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  export default function Home() {
+    // Room state
+    const [q1, setQ1] = useState(0);
+    const [q2, setQ2] = useState(0);
+    const [q3, setQ3] = useState(0);
+    const [n1, setN1] = useState(4);
+    const [n2, setN2] = useState(4);
+    const [n3, setN3] = useState(4);
+    const [qs1, setQs1] = useState(4);
+    const [qs2, setQs2] = useState(4);
+    const [qs3, setQs3] = useState(4);
+
+    // Room change handlers
+    const handleRoom1Change = useCallback((q: number, qs: number, n: number) => {
+      setQ1(q);
+      setQs1(qs);
+      setN1(n);
+    }, []);
+
+    const handleRoom2Change = useCallback((q: number, qs: number, n: number) => {
+      setQ2(q);
+      setQs2(qs);
+      setN2(n);
+    }, []);
+
+    const handleRoom3Change = useCallback((q: number, qs: number, n: number) => {
+      setQ3(q);
+      setQs3(qs);
+      setN3(n);
+    }, []);
+
+    // Calculate concentration values for chart
+    const c1Value = calculateCValue(q1, qs1, n1);
+    const c2Value = calculateCValue(q2, qs2, n2);
+    const c3Value = calculateCValue(q3, qs3, n3);
+
+    return (
+      <div className="container mx-auto px-4 py-8 bg-gray-50 min-h-screen">
+        <h1 className="text-2xl font-bold mb-8 text-center text-gray-800">
+          Room Concentration Comparison with Individual Source Strengths
+        </h1>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <Room
+            roomNumber={1}
+            color="text-blue-700"
+            accentColor="accent-blue-600"
+            bgColor="bg-blue-50"
+            onChange={handleRoom1Change}
+            step={0.1}
+          />
+          <Room
+            roomNumber={2}
+            color="text-green-700"
+            accentColor="accent-green-600"
+            bgColor="bg-green-50"
+            onChange={handleRoom2Change}
+            step={0.5}
+          />
+          <Room
+            roomNumber={3}
+            color="text-orange-700"
+            accentColor="accent-orange-600"
+            bgColor="bg-orange-50"
+            onChange={handleRoom3Change}
+            step={0.5}
+          />
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
-}
+
+        {/* Chart */}
+        <ConcentrationChart c1={c1Value} c2={c2Value} c3={c3Value} />
+
+        {/* Info Text */}
+        <Summary
+          q1={q1}
+          q2={q2}
+          q3={q3}
+          n1={n1}
+          n2={n2}
+          n3={n3}
+          qs1={qs1}
+          qs2={qs2}
+          qs3={qs3}
+        />
+      </div>
+    );
+  }
