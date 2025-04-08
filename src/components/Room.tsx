@@ -10,7 +10,7 @@ import { useState, useEffect, useCallback } from "react";
           }
 
           export default function Room({ roomNumber, color, accentColor, bgColor, onChange, step }: RoomProps) {
-            const [area, setArea] = useState(10);
+            const [area, setArea] = useState(25);
             const [height, setHeight] = useState(2.5);
             const [airChanges, setAirChanges] = useState(10);
             const [n, setN] = useState(4);
@@ -47,6 +47,13 @@ import { useState, useEffect, useCallback } from "react";
             const handleQChange = (e: React.ChangeEvent<HTMLInputElement>) => {
               const newQ = parseFloat(e.target.value) || 0;
               setQ(newQ);
+
+              // Immediately update airChanges when Q changes in direct mode
+              if (directQMode && area > 0 && height > 0) {
+                const volume = area * height;
+                const calculatedAirChanges = (newQ * 3600) / volume;
+                setAirChanges(calculatedAirChanges);
+              }
             };
 
             // Toggle between direct Q mode and air changes mode
@@ -111,13 +118,13 @@ import { useState, useEffect, useCallback } from "react";
                 <div className="mb-4">
                   <label className="block text-sm font-medium mb-1 text-gray-700">Luftflöde (Q) [m³/s]</label>
                   <input
-                    type="number"
-                    value={q.toFixed(4)}
-                    onChange={handleQChange}
-                    readOnly={!directQMode}
-                    className={`w-full p-2 border rounded ${directQMode ? 'bg-white' : 'bg-gray-100'} text-gray-900`}
-                    step="0.001"
-                  />
+                      type="number"
+                      value={directQMode ? q : q.toFixed(4)}
+                      onChange={handleQChange}
+                      readOnly={!directQMode}
+                      className={`w-full p-2 border rounded ${directQMode ? 'bg-white' : 'bg-gray-100'} text-gray-900`}
+                      step="0.001"
+                    />
                 </div>
 
                 <div className="mb-4">
