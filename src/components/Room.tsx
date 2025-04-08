@@ -63,6 +63,7 @@ export default function Room({
           <input
             type="number"
             value={height}
+            step="0.1"
             onChange={(e) => setHeight(parseFloat(e.target.value) || 0)}
             className="w-full p-2 border rounded text-gray-900"
           />
@@ -76,7 +77,7 @@ export default function Room({
         <input
           type="range"
           min="1"
-          max="50"
+          max="150"
           step={step}
           value={airChanges}
           onChange={(e) => setAirChanges(parseFloat(e.target.value))}
